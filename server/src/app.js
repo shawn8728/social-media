@@ -45,14 +45,6 @@ passport.use(User.createStrategy());
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-// app.route("/").get(function (req, res) {
-//     if (req.isAuthenticated()) {
-//       res.render("/");
-//     } else {
-//       res.redirect("/login");
-//     }
-//   });
-
 app.route("/login").post(async (req, res) => {
   const { phone, password } = req.body;
 
@@ -64,6 +56,7 @@ app.route("/login").post(async (req, res) => {
     // if authentication failed return error
     if (authRes.error) {
       res.status(600).send({ message: "Authentication failed" });
+      console.error(authRes.error);
     } else {
       // if authentication successful, log user in
       const user = authRes.user;
@@ -75,7 +68,9 @@ app.route("/login").post(async (req, res) => {
 
         const payload = { userData: user };
         const token = jwt.sign(payload, "shhhhh");
-        res.status(200).send({ token: token, message: "Successfully logged in!" });
+        res
+          .status(200)
+          .send({ token: token, message: "Successfully logged in!" });
         console.log("Successfully logged in!");
       });
     }
@@ -98,7 +93,13 @@ app.route("/register").post(async (req, res) => {
 
   try {
     console.log("Trying to register...");
-    const res = await User.register(newUser, password);
+
+    const registerRes = await User.register(newUser, password);
+    if (registerRes.error) {
+      res.status(600).send({ message: "Registration failed" });
+      console.error(registerRes.error);
+    }
+    res.status(200).send({ message: "Successfully registered!" });
     console.log("Successfully registered!");
   } catch (err) {
     console.error(err);

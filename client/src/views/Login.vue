@@ -38,6 +38,7 @@
                 >Password</label
               >
               <input
+                v-model="password"
                 type="password"
                 name="password"
                 id="password"
@@ -87,19 +88,25 @@
 <script setup>
 import axios from 'axios'
 import { ref } from 'vue'
+import router from '../router';
 
 const phone = ref('')
 const password = ref('')
 
 const handleSubmit = async () => {
-  const loginData = {
+  const inputData = {
     phone: phone.value,
     password: password.value
   }
-
   try {
-    const response = await axios.post('http://localhost:3000/login', loginData)
-    console.log(response.data)
+    const res = await axios.post('http://localhost:3000/login', inputData)
+    if (res.status === 200){
+        localStorage.setItem('token', res.data.token)
+        localStorage.setItem('user', JSON.stringify(res.data.user))
+        router.push('/')
+    } else {
+        console.log(res)
+    }
   } catch (error) {
     console.error(error)
   }

@@ -21,19 +21,20 @@
             >
               Create account
             </h1>
-            <form class="space-y-4 md:space-y-6" action="#">
+            <form class="space-y-4 md:space-y-6" v-on:submit.prevent="handleSubmit">
               <div>
                 <label for="tel" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >Your phone number</label
                 >
                 <input
+                  v-model="phone"
                   type="tel"
                   name="phone"
                   id="phone"
                   class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="+886"
-                  required=""
-                />
+                  />
+                  <!-- required="" -->
               </div>
               <div>
                 <label
@@ -42,13 +43,14 @@
                   >Your username</label
                 >
                 <input
+                  v-model="username"
                   type="text"
                   name="username"
                   id="username"
                   class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="name"
-                  required=""
-                />
+                  />
+                  <!-- required="" -->
               </div>
               <div>
                 <label
@@ -57,19 +59,21 @@
                   >Your email</label
                 >
                 <input
+                  v-model="email"
                   type="email"
                   name="email"
                   id="email"
                   class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="name@company.com"
-                  required=""
-                />
+                  />
+                  <!-- required="" -->
               </div>
               <div>
                 <label for="bio" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >Your short bio</label
                 >
                 <textarea
+                  v-model="bio"
                   name="bio"
                   id="bio"
                   rows="4"
@@ -84,6 +88,7 @@
                   >Password</label
                 >
                 <input
+                  v-model="password"
                   type="password"
                   name="password"
                   id="password"
@@ -104,8 +109,8 @@
                   id="confirm-password"
                   placeholder="••••••••"
                   class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  required=""
-                />
+                  />
+                  <!-- required="" -->
               </div>
               <div class="flex items-start">
                 <div class="flex items-center h-5">
@@ -150,6 +155,34 @@
   </template>
   
 <script setup>
+import axios from 'axios'
+import { ref } from 'vue'
+import router from '../router';
+
+const phone = ref('')
+const username = ref('')
+const email = ref('')
+const bio = ref('')
+const password = ref('')
+
+const handleSubmit = async () => {
+  const inputData = {
+    phone: phone.value,
+    username: username.value,
+    email: email.value,
+    bio: bio.value,
+    password: password.value
+  }
+
+  try {
+    const res = await axios.post('http://localhost:3000/register', inputData)
+    if (res.status === 200) {
+      router.push('/login')
+    }
+  } catch (error) {
+    console.error(error)
+  }
+}
 </script>
 
   

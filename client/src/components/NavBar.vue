@@ -4,12 +4,12 @@
       <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
         <router-link to="/" class="flex items-center">
           <img
-            src="https://upload.wikimedia.org/wikipedia/commons/5/52/E.SUN_Bank.svg"
+            src="./icons/rocket.svg"
             class="mr-3 h-6 sm:h-9"
             alt="Logo"
           />
           <span class="self-center text-xl font-semibold whitespace-nowrap dark:text-white"
-            >E.SUN</span
+            >SW</span
           >
         </router-link>
         <div class="flex items-center lg:order-2">

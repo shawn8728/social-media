@@ -102,7 +102,6 @@ const handleSubmit = async () => {
     const res = await axios.post('http://localhost:3000/login', inputData)
     if (res.status === 200){
         localStorage.setItem('token', res.data.token)
-        localStorage.setItem('user', JSON.stringify(res.data.user))
         router.push('/')
     } else {
         console.log(res)

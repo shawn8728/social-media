@@ -65,7 +65,7 @@ app.route("/login").post(async (req, res) => {
           res.status(500).send({ message: "Error logging in" });
           console.error(err);
         }
-
+        // pass a toaken to the client if login successful
         const payload = { userData: user };
         const token = jwt.sign(payload, "shhhhh");
         res
@@ -79,7 +79,18 @@ app.route("/login").post(async (req, res) => {
   }
 });
 
-app.route("/logout").post((req, res) => {});
+app.route("/logout").post((req, res) => {
+  console.log("Trying to logout...")
+  req.logout((err) => {
+    if (err) {
+      res.status(500).send({ message: "Error logging out" });
+      console.error(err);
+    } else {
+      res.status(200).send({ message: "Successfully logged out!" });
+      console.log("Successfully logged out!");
+    }
+  });
+});
 
 app.route("/register").post(async (req, res) => {
   const { phone, username, email, bio, password } = req.body;
@@ -94,6 +105,7 @@ app.route("/register").post(async (req, res) => {
   try {
     console.log("Trying to register...");
 
+    // registering user
     const registerRes = await User.register(newUser, password);
     if (registerRes.error) {
       res.status(600).send({ message: "Registration failed" });

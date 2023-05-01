@@ -178,6 +178,8 @@ const handleSubmit = async () => {
     const res = await axios.post('http://localhost:3000/register', inputData)
     if (res.status === 200) {
       router.push('/login')
+    } else {
+      console.log(res)
     }
   } catch (error) {
     console.error(error)

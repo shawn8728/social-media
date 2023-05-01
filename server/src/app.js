@@ -36,14 +36,50 @@ const userSchema = new mongoose.Schema({
   bio: String,
 });
 
+const postSchema = new mongoose.Schema({
+  userid: String,
+  username: String,
+  content: String,
+  createtime: Date,
+});
+
 userSchema.plugin(passportLocalMongoose, { usernameField: "phone" });
 
 const User = mongoose.model("User", userSchema);
+const Post = mongoose.model("Post", postSchema);
 
 passport.use(User.createStrategy());
 
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
+
+app.route("/").get(async (req, res) => {
+  // get all the posts from the database and send them to the client
+  // console.log("Trying to get posts...");
+  try {
+    const posts = await Post.find();
+    res.status(200).send(posts);
+    // console.log("Successfully got posts!");
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({ message: "Error getting posts" });
+  }
+});
+
+app.route("/dashboard").get(async (req, res) => {
+  // get user posts from the database and send them to the client
+  // console.log("Trying to get posts...");
+
+  const userid = req.query.userid;
+  try {
+    const posts = await Post.find({ userid: userid }).exec();
+    res.status(200).send(posts);
+    // console.log("Successfully got posts!");
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({ message: "Error getting posts" });
+  }
+});
 
 app.route("/login").post(async (req, res) => {
   const { phone, password } = req.body;
@@ -71,7 +107,7 @@ app.route("/login").post(async (req, res) => {
         res
           .status(200)
           .send({ token: token, message: "Successfully logged in!" });
-        console.log("Successfully logged in!");
+        // console.log("Successfully logged in!");
       });
     }
   } catch (err) {
@@ -80,14 +116,14 @@ app.route("/login").post(async (req, res) => {
 });
 
 app.route("/logout").post((req, res) => {
-  console.log("Trying to logout...")
+  console.log("Trying to logout...");
   req.logout((err) => {
     if (err) {
       res.status(500).send({ message: "Error logging out" });
       console.error(err);
     } else {
       res.status(200).send({ message: "Successfully logged out!" });
-      console.log("Successfully logged out!");
+      // console.log("Successfully logged out!");
     }
   });
 });
@@ -112,7 +148,32 @@ app.route("/register").post(async (req, res) => {
       console.error(registerRes.error);
     }
     res.status(200).send({ message: "Successfully registered!" });
-    console.log("Successfully registered!");
+    // console.log("Successfully registered!");
+  } catch (err) {
+    console.error(err);
+  }
+});
+
+app.route("/createpost").post(async (req, res) => {
+  const { userid, username, content, createtime } = req.body;
+
+  const newPost = new Post({
+    userid: userid,
+    username: username,
+    content: content,
+    createtime: createtime,
+  });
+
+  try {
+    console.log("Trying to create post...");
+    // creating post
+    const postRes = await newPost.save();
+    if (postRes.error) {
+      res.status(600).send({ message: "Post creation failed" });
+      console.error(postRes.error);
+    }
+    res.status(200).send({ message: "Successfully created post!" });
+    // console.log("Successfully created post!");
   } catch (err) {
     console.error(err);
   }

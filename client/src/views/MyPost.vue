@@ -41,7 +41,7 @@ const userData = decodedToken.userData
 
 onMounted(async () => {
   try {
-    const response = await axios.get(`http://localhost:3000/dashboard?userid=${userData._id}`)
+    const response = await axios.get(`http://localhost:3000/mypost?userid=${userData._id}`)
     posts.data = response.data
   } catch (error) {
     console.log(error)

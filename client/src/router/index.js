@@ -3,7 +3,7 @@ import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
 import CreatePost from '../views/CreatePost.vue'
 import Home from '../views/Home.vue'
-import Dashboard from '../views/Dashboard.vue'
+import MyPost from '../views/MyPost.vue'
 import Profile from '../views/Profile.vue'
 
 const router = createRouter({
@@ -30,9 +30,9 @@ const router = createRouter({
         component: CreatePost
     },
     {
-        path: '/dashboard',
-        name: 'Dashboard',
-        component: Dashboard
+        path: '/mypost',
+        name: 'MyPost',
+        component: MyPost
     },
     {
         path: '/profile',

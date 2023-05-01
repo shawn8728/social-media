@@ -66,7 +66,7 @@ app.route("/").get(async (req, res) => {
   }
 });
 
-app.route("/dashboard").get(async (req, res) => {
+app.route("/mypost").get(async (req, res) => {
   // get user posts from the database and send them to the client
   // console.log("Trying to get posts...");
 

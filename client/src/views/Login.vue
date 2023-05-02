@@ -1,12 +1,19 @@
 <template>
-  <section class="bg-gray-50 dark:bg-gray-900">
+  <section class="bg-white dark:bg-gray-900">
     <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-      <!-- <a href="#" class="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
-          <img class="w-8 h-8 mr-2" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg" alt="logo">
-          Flowbite    
-      </a> -->
+      <a
+        href="#"
+        class="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white"
+      >
+        <img
+          class="w-8 h-8 mr-2"
+          src="../components/icons/rocket.svg"
+          alt="logo"
+        />
+        SW
+      </a>
       <div
-        class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700"
+        class="w-full bg-white rounded-lg border border-gray-200 shadow-md dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700"
       >
         <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
           <h1
@@ -88,7 +95,7 @@
 <script setup>
 import axios from 'axios'
 import { ref } from 'vue'
-import router from '../router';
+import router from '../router'
 
 const phone = ref('')
 const password = ref('')
@@ -100,11 +107,11 @@ const handleSubmit = async () => {
   }
   try {
     const res = await axios.post('http://localhost:3000/login', inputData)
-    if (res.status === 200){
-        localStorage.setItem('token', res.data.token)
-        router.push('/')
+    if (res.status === 200) {
+      localStorage.setItem('token', res.data.token)
+      router.push('/')
     } else {
-        console.log(res)
+      console.log(res)
     }
   } catch (error) {
     console.error(error)
